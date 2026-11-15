@@ -5,4 +5,10 @@
 .hero,.contact-section{background:#eef5fd}.hero-overline,.section-label,.project-category{color:var(--amber)}.button-secondary{background:#f8fbff;border-color:#bdd4ec}.button-primary:hover{background:#285c91}.nav-links a.active,.nav-links a:hover{color:var(--amber)}
 
 /* Original portrait: gentle display adjustment only, no generated facial edits. */
-.hero-avatar{object-fit:cover;object-position:center 35%;filter:brightness(1.08);border:3px solid #b9dcfa;box-shadow:0 0 0 5px #e3f1fd;background:#eef5fd}
+.hero-avatar{object-fit:cover;object-position:center;filter:none;border:3px solid #b9dcfa;box-shadow:0 0 0 5px #e3f1fd;background:#eef5fd}
+/* Luminous circular frame, separate from the untouched portrait. */
+.avatar-wrapper{position:relative;width:170px;height:170px;margin:0 auto 28px;isolation:isolate}
+.avatar-wrapper .hero-avatar{display:block;width:100%;height:100%;margin:0;object-fit:cover;object-position:center;border:0;border-radius:50%;filter:none;box-shadow:none}
+.avatar-wrapper::before{content:"";position:absolute;inset:-7px;z-index:1;pointer-events:none;border:3px solid #bdeeff;border-radius:50%;box-shadow:inset 0 0 4px #fff,inset 0 0 10px #52c5f7,0 0 3px #fff,0 0 9px #6ad4ff,0 0 19px #a5dfff;background:transparent}
+.avatar-wrapper::after{content:"</>";position:absolute;right:-13px;bottom:24px;z-index:2;display:grid;place-items:center;width:47px;height:39px;border:2px solid #c8f1ff;border-radius:12px;background:#dff4ff;color:#299bcf;font:bold 23px/1 monospace;letter-spacing:-4px;padding-right:4px;text-shadow:0 1px 0 #fff;box-shadow:0 0 5px #fff,0 0 12px #7dd5fb;transform:rotate(-8deg);pointer-events:none}
+@media(max-width:600px){.avatar-wrapper{width:70px;height:70px;margin:7px 0;flex:0 0 70px}.avatar-wrapper::before{inset:-4px;border-width:2px;box-shadow:inset 0 0 4px #fff,0 0 7px #6ad4ff,0 0 12px #a5dfff}.avatar-wrapper::after{right:-9px;bottom:5px;width:27px;height:24px;border-width:1px;border-radius:7px;font-size:14px;letter-spacing:-2px;padding-right:2px}}
