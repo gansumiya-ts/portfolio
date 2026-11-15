@@ -2,6 +2,8 @@
 
 A simple one-page portfolio website built with HTML, CSS, and JavaScript.
 
+Minimal neutral design with AgentQuantx and eSimLinq highlighted first. Existing engineering projects remain filterable.
+
 ## Files
 - `index.html`
 - `style.css`
@@ -13,11 +15,12 @@ Just open `index.html` in your browser.
 ## Interactive features
 - Filter all 10 projects by All / Data / Backend / AI / Telecom, or select a technology chip. All resets both filters.
 - Open project details with the card or its keyboard-accessible Explore button. Escape closes the dialog and restores focus.
-- Terminal commands: `help`, `projects`, `skills`, `contact`, `clear`. Touch command buttons are included.
-- Kafka event demo: eligible, filtered and duplicate fixtures, with simulated Redis and API output. It sends no network requests.
+- Expand “Explore via terminal” for commands: `help`, `projects`, `skills`, `contact`, `clear`. Touch command buttons are included.
+- Batch ETL / Kafka reference architecture with ingestion, processing, storage, serving, recovery and observability layers.
+- Event demo: eligible, filtered, duplicate and API failure / retry / dead-letter fixtures. It sends no network requests.
 - Copy email, active navigation and reduced-motion support.
 
-`interactions.js` and `interactions.css` contain the enhancements. Project narratives summarize the original descriptions; diagrams are illustrative. No unpublished metrics, screenshots or repository URLs were invented. `screenshots/pipeline-demo.png` is an actual screenshot of the local simulation. Existing live-site links are preserved.
+`interactions.js` and `interactions.css` contain the enhancements. Project narratives summarize the original descriptions; diagrams are illustrative, not verified production deployment maps. No unpublished metrics, screenshots or repository URLs were invented. `screenshots/pipeline-demo.png` is an actual screenshot of the local simulation. Existing live-site links are preserved.
 
 For clipboard support, serve over localhost or HTTPS (GitHub Pages). If the browser denies clipboard access, the page displays a manual-copy instruction.
 

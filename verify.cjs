@@ -50,6 +50,12 @@ const server = http.createServer((req, res) => {
       assert.equal(output.includes('200 OK'), scenario === 'eligible');
       if (scenario !== 'eligible') assert.equal(await page.locator('.pipeline-track li').last().innerText(), 'API\nSkipped');
     }
+    await page.locator('.terminal-card summary').click();
+    await page.locator('#event-sample').selectOption('failed');
+    await page.locator('.demo-run').click();
+    await page.waitForFunction(() => !document.querySelector('.demo-run').disabled);
+    assert.match(await page.locator('.demo-output').innerText(), /dead-letter queue/);
+    assert.equal(await page.locator('.project-card').first().locator('.project-link').getAttribute('href'), 'https://agentquantx.com/');
     await page.locator('#terminal-command').fill('projects'); await page.locator('#terminal-command').press('Enter');
     assert.match(await page.locator('.terminal-log').innerText(), /eSimLinq/);
     for (const command of ['help', 'skills', 'contact']) await page.locator('.command-buttons').getByRole('button', { name: command, exact: true }).click();
@@ -61,7 +67,11 @@ const server = http.createServer((req, res) => {
     assert.equal(await page.evaluate(() => navigator.clipboard.readText()), 'gansumiyatsedevsuren@gmail.com');
     await page.locator('#pipeline-demo').scrollIntoViewIfNeeded();
     fs.mkdirSync(path.join(__dirname, 'screenshots'), { recursive: true });
+    await page.addStyleTag({ content: '.navbar { visibility: hidden; }' });
     await page.locator('#pipeline-demo').screenshot({ path: path.join(__dirname, 'screenshots/pipeline-demo.png') });
+    await page.addStyleTag({ content: '.navbar { visibility: visible; }' });
+    await page.locator('.terminal-card summary').click();
+    await page.locator('#home').scrollIntoViewIfNeeded();
     await page.screenshot({ path: path.join(__dirname, 'screenshots/desktop.png') });
     await page.locator('.detail-open').nth(1).click();
     await page.screenshot({ path: path.join(__dirname, 'screenshots/project-detail.png') });
@@ -70,6 +80,7 @@ const server = http.createServer((req, res) => {
     await page.locator('#pipeline-demo').scrollIntoViewIfNeeded();
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'mobile overflow');
     await page.screenshot({ path: path.join(__dirname, 'screenshots/mobile.png') });
+    await page.locator('.terminal-card summary').click();
     await page.locator('.command-buttons').getByRole('button', { name: 'help', exact: true }).click();
     await page.locator('.detail-open').nth(0).click();
     assert.equal(await page.evaluate(() => document.querySelector('dialog').scrollWidth <= document.querySelector('dialog').clientWidth), true, 'modal overflow');
@@ -81,12 +92,12 @@ const server = http.createServer((req, res) => {
     const touchContext = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
     const touchPage = await touchContext.newPage();
     await touchPage.goto(`http://127.0.0.1:${server.address().port}/`);
+    await touchPage.locator('.terminal-card summary').tap();
     await touchPage.locator('.command-buttons').getByRole('button', { name: 'projects', exact: true }).tap();
     assert.match(await touchPage.locator('.terminal-log').innerText(), /eSimLinq/);
     await touchPage.locator('.detail-open').nth(1).tap();
     assert.equal(await touchPage.locator('dialog').isVisible(), true);
-    await touchPage.locator('dialog img').scrollIntoViewIfNeeded();
-    await touchPage.waitForFunction(() => document.querySelector('dialog img').naturalWidth > 0);
+    assert.equal(await touchPage.locator('dialog .architecture-board').isVisible(), true);
     await touchPage.locator('.dialog-close').tap();
     await touchPage.locator('#mobile-menu-button').tap();
     await touchPage.locator('#mobile-menu a[href="#projects"]').tap();
@@ -94,6 +105,6 @@ const server = http.createServer((req, res) => {
     await touchPage.waitForFunction(() => document.querySelector('.nav-links a[href="#projects"]').getAttribute('aria-current') === 'location');
     await touchContext.close();
     assert.deepEqual(errors, []);
-    console.log('PASS: category/stack filters, empty state, 10 dialogs, keyboard focus, terminal safety, three demo paths and replay, clipboard, mobile layout, reduced/normal motion; no JS errors.');
+    console.log('PASS: category/stack filters, empty state, 10 dialogs, keyboard focus, terminal safety, four demo paths and replay, clipboard, mobile layout, reduced/normal motion; no JS errors.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; }).finally(() => server.close());
